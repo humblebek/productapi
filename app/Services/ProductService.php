@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
 use App\Helpers\CommonHelpers;
 use Illuminate\Database\Eloquent\Builder;
@@ -39,19 +40,27 @@ class ProductService
         return Product::with('category')->findOrFail($id);
     }
 
-    public function update(Request $request, Product $product): Product
+    public function update(UpdateProductRequest $request, string $id): Product
     {
+        $product = Product::findOrFail($id);
         $data = $request->validated();
 
         if ($request->hasFile('image')) {
-            $this->commonHelper->delete("products/{$product->image}");
-            $data['image'] = $this->commonHelper->upload($request->file('image'), 'products');
+            if ($product->image) {
+                $this->commonHelper->delete("products/{$product->image}");
+            }
+
+            $data['image'] = $this->commonHelper->upload(
+                $request->file('image'),
+                'products'
+            );
         }
 
         $product->update($data);
 
         return $product;
     }
+
 
     public function destroy(Product $product): bool
     {

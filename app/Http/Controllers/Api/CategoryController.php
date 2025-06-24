@@ -25,7 +25,6 @@ class CategoryController extends Controller
     {
         $categories = $this->categoryService->index();
         return $this->commonHelper->returnResponse("Barcha kategoriyalar", $categories);
-
     }
 
     public function store(StoreCategoryRequest $request): JsonResponse
@@ -33,7 +32,6 @@ class CategoryController extends Controller
         $category = $this->categoryService->store($request);
         return $this->commonHelper->returnResponse("Kategoriya qo‘shildi", $category);
     }
-
 
     public function show($id): JsonResponse
     {
@@ -46,6 +44,7 @@ class CategoryController extends Controller
 
     public function update(UpdateCategoryRequest $request, $id): JsonResponse
     {
+
         $updated = $this->categoryService->update($request, $id);
         return $this->commonHelper->returnResponse("Kategoriya yangilandi", $updated);
     }

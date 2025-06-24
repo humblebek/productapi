@@ -42,6 +42,7 @@ class CategoryService
     {
         $validated = $request->validated();
 
+
         $category = Category::findOrFail($id);
 
         if ($request->hasFile('image')) {
@@ -53,10 +54,8 @@ class CategoryService
                 'categories'
             );
         }
-
         $category->update(array_filter($validated));
-
-        return $category->fresh();
+        return $category;
     }
 
 

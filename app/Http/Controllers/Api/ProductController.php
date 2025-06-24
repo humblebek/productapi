@@ -51,10 +51,11 @@ class ProductController extends Controller
 
     public function update(UpdateProductRequest $request, string $id): JsonResponse
     {
-        $product = Product::findOrFail($id);
-        $updated = $this->productService->update($request, $product);
-        return $this->commonHelper->returnResponse("Mahsulot yangilandi", new ProductResource($updated));
+        $product = $this->productService->update($request, $id);
+
+        return $this->commonHelper->returnResponse("Mahsulot yangilandi", (new ProductResource($product))->toArray(request()));
     }
+
 
     public function destroy(string $id): JsonResponse
     {
