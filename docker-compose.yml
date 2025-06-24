@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: product_app
+        ports:
+            - "8000:8000"
+        volumes:
+            - .:/var/www
+        depends_on:
+            - db
+            - elasticsearch
+        networks:
+            - product-network
+        environment:
+            DB_CONNECTION: pgsql
+            DB_HOST: db
+            DB_PORT: 5432
+            DB_DATABASE: tafakkur
+            DB_USERNAME: hogwarts
+            DB_PASSWORD: postgre1524
+
+    db:
+        image: postgres:14
+        container_name: product_db
+        restart: always
+        ports:
+            - "5433:5432"
+        environment:
+            POSTGRES_DB: tafakkur
+            POSTGRES_USER: hogwarts
+            POSTGRES_PASSWORD: postgre1524
+        volumes:
+            - pgdata:/var/lib/postgresql/data
+        networks:
+            - product-network
+
+    elasticsearch:
+        image: docker.elastic.co/elasticsearch/elasticsearch:7.17.0
+        container_name: elasticsearch
+        environment:
+            - discovery.type=single-node
+            - ES_JAVA_OPTS=-Xms512m -Xmx512m
+        ports:
+            - "9200:9200"
+        networks:
+            - product-network
+
+volumes:
+    pgdata:
+
+networks:
+    product-network:
+        driver: bridge
