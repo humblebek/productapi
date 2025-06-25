@@ -25,20 +25,26 @@ This is a Laravel 10-based RESTful API project for managing products and categor
    git clone https://github.com/humblebek/productapi.git
    cd productapi
 Copy .env.example to .env and update your environment variables, especially PostgreSQL credentials:
-
+```
 cp .env.example .env
-
+```
 Build and start Docker containers:
+
+```
 docker-compose up -d --build
+```
 
 Enter the app container:
+```
 docker exec -it product_app bash
+```
 
 Install PHP dependencies and run migrations:
+```
 composer install
 php artisan key:generate
 php artisan migrate
-
+```
 
 Example endpoints:
 
