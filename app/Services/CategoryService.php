@@ -4,7 +4,9 @@ namespace App\Services;
 
 use App\Models\Category;
 use App\Helpers\CommonHelpers;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use App\Http\Requests\UpdateCategoryRequest;
 
@@ -68,5 +70,12 @@ class CategoryService
 
         return $category->delete();
     }
+
+    // display all categories by it's products
+    public function getProductsByCategory($categoryId): Builder|array|Collection|Model
+    {
+        return Category::with('products')->findOrFail($categoryId);
+    }
+
 }
 

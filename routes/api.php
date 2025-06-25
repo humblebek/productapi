@@ -27,6 +27,7 @@ Route::post('login', [AuthController::class, 'login']);
 
 Route::middleware('auth:api')->group(function () {
     Route::apiResource('categories', CategoryController::class);
+    Route::get('/category/products/{categoryId}', [CategoryController::class, 'getProductsByCategory']);
     Route::apiResource('products', ProductController::class);
     Route::post('logout', [AuthController::class, 'logout']);
 });

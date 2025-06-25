@@ -6,6 +6,7 @@ use App\Helpers\CommonHelpers;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
+use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use App\Services\CategoryService;
 use Illuminate\Http\JsonResponse;
@@ -15,7 +16,7 @@ class CategoryController extends Controller
     protected CommonHelpers $commonHelper;
     protected CategoryService $categoryService;
 
-    public function __construct(CommonHelpers $commonHelper,CategoryService $categoryService)
+    public function __construct(CommonHelpers $commonHelper, CategoryService $categoryService)
     {
         $this->commonHelper = $commonHelper;
         $this->categoryService = $categoryService;
@@ -55,5 +56,19 @@ class CategoryController extends Controller
         $this->categoryService->destroy($category);
         return $this->commonHelper->returnResponse("Kategoriya muvaffaqiyatli o‘chirildi");
     }
+
+    // display all categories by it's products
+    public function getProductsByCategory($categoryId): JsonResponse
+    {
+        $category = $this->categoryService->getProductsByCategory($categoryId);
+
+        return $this->commonHelper->returnResponse(
+            "Kategoriya mahsulotlari",
+            (new CategoryResource($category))->toArray(request())
+        );
+    }
+
+
+
 
 }
